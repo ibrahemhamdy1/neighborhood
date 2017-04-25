@@ -13,7 +13,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     </head>
     <body>
-        <div id="map">content2</div>
+        <main id="map"></main>
         <nav class="navbar navbar-default" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -42,9 +42,7 @@
         <script src="js/navbar_responsive.js"></script>
         <script src="js/cupertino_bubble_tea.js"></script>
         <script src="js/app.js"></script>
-        <!--TODO: Insert your API Key in the below call to load the API.-->
-        <script async defer
-        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCvujX412jTrtOatZKCcIPB4Fk2pComJD4&callback=init">
-        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCvujX412jTrtOatZKCcIPB4Fk2pComJD4&callback=init"    
+            async defer onerror="mapError()"></script>
     </body>
 </html>

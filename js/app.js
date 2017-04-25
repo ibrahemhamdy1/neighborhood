@@ -10,13 +10,13 @@ var ViewModel = function() {
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
 
-            loadingMessage = 'LOADING FROM FOURSQUARE';
+            var loadingMessage = 'LOADING FROM FOURSQUARE';
             infowindow.setContent('<div>' + loadingMessage + '</div>');
             infowindow.open(this.map, marker);
 
-            REQUEST_SUFFIX = '?client_secret=4DNGUXLINKXF3BUPQFCFGAXFCIBE' +
+            var REQUEST_SUFFIX = '?client_secret=4DNGUXLINKXF3BUPQFCFGAXFCIBE' +
                 '1LPK0UMDAKOJVU5HJEW4&client_id=HNG5O2' +
-                'XJN4KQFOSEHGBQPPI0KQCQDHV0GXY0GWU5ZVNW5YAK&v=20170419'
+                'XJN4KQFOSEHGBQPPI0KQCQDHV0GXY0GWU5ZVNW5YAK&v=20170419';
             requestURL = 'https://api.foursquare.com/v2/venues/';
 
             $.ajax({
@@ -25,16 +25,16 @@ var ViewModel = function() {
             }).done(function(data) { 
                 var venue = data.response.venue;
                 var venueName = venue.name;
-                var formattedAddress = venue.location.formattedAddress[0];
+                var formattedAddress = venue.location.formattedAddress[0] || 'Address not available';
                 var fourSquareURL = venue.shortUrl;
-                var rating = venue.rating;
+                var rating = venue.rating || 'Rating not available';
 
                 var htmlBuilder = '';
-                htmlBuilder += venue.name + '<br>'
-                htmlBuilder += 'Address: ' + formattedAddress + '<br>'
+                htmlBuilder += venueName + '<br>';
+                htmlBuilder += 'Address: ' + formattedAddress + '<br>';
                 htmlBuilder += '<a href = ' + fourSquareURL +
-                    '> Link To Page' + '</a><br>' 
-                htmlBuilder +=  'Rating: ' + (rating ? rating : 'N/A') + '<br>'
+                    '> Link To Page' + '</a><br>';
+                htmlBuilder +=  'Rating: ' + rating + '<br>';
                 
                 infowindow.setContent('<div>' + htmlBuilder + '</div>');
 
@@ -47,6 +47,14 @@ var ViewModel = function() {
                 infowindow.setContent('<div>' + failMessage + '</div>');
             });
         }
+    };
+
+    this.populateAndAnimateMarker = function() {
+        self.populateInfoWindow(this, self.largeInfowindow);
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout((function() {
+            this.setAnimation(null);
+        }).bind(this), 730);
     };
 
     this.initMap = function() {
@@ -76,24 +84,15 @@ var ViewModel = function() {
                 id: i,
                 fourSquareId: fourSquareId
             });
+            marker.setMap(this.map);
             // Push the marker to our array of markers.
             this.markers.push(marker);
             // Create an onclick event to open an infowindow at each marker.
-            marker.addListener('click', function() {
-                self.populateAndAnimateMarker.call(this);
-            });
+            marker.addListener('click', self.populateAndAnimateMarker);
         }
     };
 
     this.initMap();
-
-    this.populateAndAnimateMarker = function() {
-        self.populateInfoWindow(this, self.largeInfowindow);
-        this.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout((function() {
-            this.setAnimation(null);
-        }).bind(this), 730);
-    };
 
     this.filteredShops = ko.computed(function() {
         var result = [];
@@ -101,9 +100,9 @@ var ViewModel = function() {
             var shop = this.markers[i];
             if (shop.title.toLowerCase().includes(this.filterText().toLowerCase())) {
                 result.push(shop);
-                this.markers[i].setMap(this.map);
+                this.markers[i].setVisible(true);
             } else {
-                this.markers[i].setMap(null);
+                this.markers[i].setVisible(false);
             }
         }
 
@@ -111,6 +110,11 @@ var ViewModel = function() {
     }, this);
 };
 
-function init() {
+var init = function() {
     ko.applyBindings(new ViewModel());
+};
+
+var mapError = function() {
+    console.log("map error");
+    alert("Map error!");
 };
