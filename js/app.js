@@ -23,7 +23,6 @@ var ViewModel = function() {
                 type: 'GET',
                 url: requestURL + marker.fourSquareId + REQUEST_SUFFIX
             }).done(function(data) { 
-                console.log(data);
                 var venue = data.response.venue;
                 var venueName = venue.name;
                 var formattedAddress = venue.location.formattedAddress[0];
