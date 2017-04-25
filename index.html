@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    </head>
+    <body>
+        <div id="map">content2</div>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a id="menu-toggle" href="#" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                    </a>
+                    <a class="navbar-brand">
+                        Bubble Tea Locations in Cupertino, CA
+                    </a>
+                </div>
+                <div id="sidebar-wrapper" class="sidebar-toggle">
+                    <input data-bind="textInput: filterText" id="filter-text" type="text" placeholder="Filter">
+                    <ul class="sidebar-nav" data-bind="foreach: filteredShops">
+                        <li>
+                            <a data-bind="text: title, click: $parent.populateAndAnimateMarker"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="js/navbar_responsive.js"></script>
+        <script src="js/cupertino_bubble_tea.js"></script>
+        <script src="js/app.js"></script>
+        <!--TODO: Insert your API Key in the below call to load the API.-->
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCvujX412jTrtOatZKCcIPB4Fk2pComJD4&callback=init">
+        </script>
+    </body>
+</html>
